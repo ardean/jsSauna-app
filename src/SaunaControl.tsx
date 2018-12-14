@@ -21,6 +21,7 @@ const Container = styled.div`
   color: #222;
   background-color: #fff;
   padding: 10px 20px;
+  border-radius: 3px;
 `;
 
 const Head = styled.div`
@@ -35,6 +36,9 @@ const Title = styled(H1)`
 
 const Label = styled.label`
   color: #999;
+  display: block;
+  margin-bottom: 3px;
+  font-size: 15px;
 `;
 
 const LogoutIcon = styled(IoIosLogOut).attrs({ size: "24px" })`
@@ -49,12 +53,19 @@ const OnOffRow = styled(Row)`
   user-select: none;
 `;
 
+const OnOffCheckbox = styled.input.attrs({ type: "checkbox" })`
+  cursor: pointer;
+  margin: 0;
+  height: 24px;
+`;
+
 const OnOffLabel = styled(Label)`
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 20px;
   flex: 1;
+  margin-bottom: 0;
   cursor: pointer;
 `;
 
@@ -99,8 +110,7 @@ class SettingsDetail extends React.Component<Props> {
           {loginRequired && <LogoutIcon onClick={this.logout} />}
         </Head>
         <OnOffRow>
-          <input
-            type="checkbox"
+          <OnOffCheckbox
             id="is-sauna-on"
             onChange={this.onOnOffChange}
             checked={on}

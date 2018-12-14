@@ -14,6 +14,7 @@ const Container = styled.div`
   color: #222;
   background-color: #fff;
   padding: 10px 20px;
+  border-radius: 3px;
 `;
 
 const Title = styled(H1)``;
