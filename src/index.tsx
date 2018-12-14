@@ -1,25 +1,39 @@
+import App from "./App";
 import * as React from "react";
+import { baseUrl } from "./config";
+import transport from "./transport";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import App from "./App";
-import transport from "./transport";
+import session from "./services/session";
+import statusApi from "./status/statusApi";
 import configureStore from "./configureStore";
-import { initialState as initialSettingsState } from "./settings/reducer";
 import settingsApi from "./settings/settingsApi";
-import { baseUrl } from "./config";
-import "./index.css";
+import GlobalStyle from "./components/GlobalStyle";
 
 const store = configureStore({
-  settings: initialSettingsState
+  sessionId: session.getSessionId(),
+  loginError: "",
+  loading: true,
+  loginRequired: true,
+  heating: false,
+  humidity: null,
+  maxTemperature: null,
+  on: false,
+  targetTemperature: null,
+  temperature: null
 });
 
 transport.connect(baseUrl);
 
 settingsApi.init(store);
+statusApi.init(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <>
+      <GlobalStyle />
+      <App />
+    </>
   </Provider>,
   document.getElementById("root") as HTMLElement
 );

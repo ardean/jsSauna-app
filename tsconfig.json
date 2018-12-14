@@ -8,12 +8,13 @@
       "es6",
       "dom"
     ],
+    "sourceMap": true,
     "jsx": "react",
     "moduleResolution": "node",
     "rootDir": "src"
   },
-  "exclude": [
-    "node_modules",
-    "build"
+  "include": [
+    "src/**/*",
+    "images.d.ts"
   ]
 }

@@ -1,38 +1,43 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import * as settingsActions from "./settings/settingsActions";
-import LoadingIndicator from "./components/LoadingIndicator";
-import ErrorModal from "./components/ErrorModal";
-import Login from "./components/Login";
-import SaunaControl from "./components/SaunaControl";
+import Login from "./auth/Login";
+import * as actions from "./actions";
 import { AppState } from "./reducer";
-import Settings from "./settings/Settings";
+import { connect } from "react-redux";
+import SaunaControl from "./SaunaControl";
+import LoadingIndicator from "./components/LoadingIndicator";
 
 interface Props {
-  settings: Settings;
-  loadSettings();
+  loading: boolean;
+  sessionId: string;
+  loginRequired: boolean;
+  check(sessionId?: string): Promise<void>;
 }
 
 class App extends React.Component<Props> {
-  componentDidMount() {
-    this.props.loadSettings();
+  async componentDidMount() {
+    const { check, sessionId } = this.props;
+    await check(sessionId);
   }
 
   render() {
-    const { settings } = this.props;
-    if (!settings) return <LoadingIndicator />;
-    // return <ErrorModal />;
-    // return <Login />;
-    return <SaunaControl settings={settings} />;
+    const { loginRequired, loading, sessionId } = this.props;
+    if (loading) return <LoadingIndicator />;
+    if (loginRequired && !sessionId) return <Login />;
+
+    return (
+      <SaunaControl />
+    );
   }
 }
 
 const mapStateToProps = (state: AppState) => ({
-  settings: state.settings.settings
+  loginRequired: state.loginRequired,
+  sessionId: state.sessionId,
+  loading: state.loading
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadSettings: () => dispatch(settingsActions.load())
+  check: (sessionId?: string) => dispatch(actions.check(sessionId))
 });
 
 export default connect(
