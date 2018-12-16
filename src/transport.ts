@@ -7,7 +7,7 @@ class Transport extends EventEmitter {
 
   connect(host: string) {
     this.socket = io(host, {
-      path: location.pathname + "sockets",
+      path: "/sockets",
     });
 
     this.socket
